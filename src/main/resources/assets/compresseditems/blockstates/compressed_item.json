@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "compresseditems:block/compressed_item"
+    }
+  }
+}

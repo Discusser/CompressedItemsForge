@@ -1,0 +1,7 @@
+{
+  "type": "compresseditems:decompression_crafting",
+  "output": {
+    "count": 9,
+    "item": "compresseditems:uncompressed_item"
+  }
+}
