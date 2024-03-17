@@ -6,22 +6,17 @@ import com.mojang.math.Vector3f;
 import io.github.discusser.compresseditems.objects.blockentities.CompressedBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.ModelManager;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class CompressedBlockRenderer implements BlockEntityRenderer<CompressedBlockEntity> {
     protected final BlockEntityRendererProvider.Context context;
 
-    // both of these methods return final values, therefore this is fine
-    final ModelManager modelManager = Minecraft.getInstance().getModelManager();
-    final BlockRenderDispatcher renderer = Minecraft.getInstance().getBlockRenderer();
+//    final ModelManager modelManager = Minecraft.getInstance().getModelManager();
+//    final BlockRenderDispatcher renderer = Minecraft.getInstance().getBlockRenderer();
 
     public CompressedBlockRenderer(final BlockEntityRendererProvider.Context context) {
         this.context = context;
@@ -45,7 +40,7 @@ public class CompressedBlockRenderer implements BlockEntityRenderer<CompressedBl
     }
 
     @Override
-    public void render(@NotNull CompressedBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack,
+    public void render(@NotNull CompressedBlockEntity pBlockEntity, float pPartialTick, @NotNull PoseStack pPoseStack,
                        @NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
 
         ItemStack uncompressed = pBlockEntity.getUncompressed();

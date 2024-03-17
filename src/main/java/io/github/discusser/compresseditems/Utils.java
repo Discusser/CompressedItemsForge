@@ -65,7 +65,7 @@ public class Utils {
     public static List<Item> getItemsFromTags(TagKey<Item>... tags) {
         List<Item> items = new ArrayList<>();
         for (TagKey<Item> tag : tags) {
-            items.addAll(ForgeRegistries.ITEMS.tags().getTag(tag).stream().toList());
+            items.addAll(Objects.requireNonNull(ForgeRegistries.ITEMS.tags()).getTag(tag).stream().toList());
         }
 
         return items;
@@ -73,7 +73,7 @@ public class Utils {
 
     public static JsonObject toJSON(ItemStack stack) {
         JsonObject obj = new JsonObject();
-        obj.addProperty("item", ForgeRegistries.ITEMS.getKey(stack.getItem()).toString());
+        obj.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(stack.getItem())).toString());
         obj.addProperty("count", stack.getCount());
         if (stack.hasTag()) obj.addProperty("nbt", stack.getOrCreateTag().toString());
         return obj;
@@ -81,7 +81,7 @@ public class Utils {
 
     public static void writeItemStack(CompoundTag tag, ItemStack itemStack) {
         CompoundTag blockentitytag = new CompoundTag();
-        blockentitytag.putString("item", ForgeRegistries.ITEMS.getKey(itemStack.getItem()).toString());
+        blockentitytag.putString("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(itemStack.getItem())).toString());
         blockentitytag.put("nbt", itemStack.getOrCreateTag());
         tag.put("BlockEntityTag", blockentitytag);
     }
@@ -110,7 +110,7 @@ public class Utils {
         if (CompressedItemsConfig.compressAll.get())
             allItems.stream()
                     .filter(item -> !item.equals(Items.AIR))
-                    .filter(item -> !ForgeRegistries.ITEMS.getKey(item).getNamespace().equals(MODID))
+                    .filter(item -> !Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).getNamespace().equals(MODID))
                     .forEach(items::add);
 
         if (CompressedItemsConfig.compressStones.get())

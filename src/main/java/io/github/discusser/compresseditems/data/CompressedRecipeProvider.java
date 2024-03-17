@@ -7,10 +7,8 @@ import io.github.discusser.compresseditems.recipes.decompression.DecompressionRe
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -20,30 +18,25 @@ public class CompressedRecipeProvider extends RecipeProvider {
         super(p_125973_);
     }
 
-    @Override
-    protected void buildCraftingRecipes(@NotNull Consumer<FinishedRecipe> finishedRecipe) {
-        twoWayRecipe(finishedRecipe, ItemRegistry.UNCOMPRESSED_ITEM.get());
-    }
-
-    @SafeVarargs
-    public static void compressionRecipesForTags(Consumer<FinishedRecipe> finishedRecipe, TagKey<Item>... tags) {
-        for (TagKey<Item> tag : tags) {
-            compressionRecipesForTag(finishedRecipe, tag);
-        }
-    }
-
-    public static void compressionRecipesForTag(Consumer<FinishedRecipe> finishedRecipe, TagKey<Item> tag) {
-        ForgeRegistries.ITEMS.tags().getTag(tag).forEach(item -> twoWayRecipe(finishedRecipe, item));
-    }
-
-    public static String criterionForItem(Item item) {
-        return "has_" + ForgeRegistries.ITEMS.getKey(item).getPath();
-    }
-
     public static void twoWayRecipe(Consumer<FinishedRecipe> finishedRecipe, Item uncompressed) {
         compression(finishedRecipe, uncompressed);
         decompression(finishedRecipe, uncompressed);
     }
+
+//    @SafeVarargs
+//    public static void compressionRecipesForTags(Consumer<FinishedRecipe> finishedRecipe, TagKey<Item>... tags) {
+//        for (TagKey<Item> tag : tags) {
+//            compressionRecipesForTag(finishedRecipe, tag);
+//        }
+//    }
+
+//    public static void compressionRecipesForTag(Consumer<FinishedRecipe> finishedRecipe, TagKey<Item> tag) {
+//        Objects.requireNonNull(ForgeRegistries.ITEMS.tags()).getTag(tag).forEach(item -> twoWayRecipe(finishedRecipe, item));
+//    }
+
+//    public static String criterionForItem(Item item) {
+//        return "has_" + Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).getPath();
+//    }
 
     public static void decompression(Consumer<FinishedRecipe> finishedRecipe, Item output) {
         DecompressionRecipeBuilder
@@ -55,6 +48,11 @@ public class CompressedRecipeProvider extends RecipeProvider {
         CompressionRecipeBuilder
                 .compressed(Utils.getCompressedOf(new ItemStack(input)))
                 .save(finishedRecipe);
+    }
+
+    @Override
+    protected void buildCraftingRecipes(@NotNull Consumer<FinishedRecipe> finishedRecipe) {
+        twoWayRecipe(finishedRecipe, ItemRegistry.UNCOMPRESSED_ITEM.get());
     }
 
     @Override

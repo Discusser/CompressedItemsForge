@@ -1,12 +1,10 @@
 package io.github.discusser.compresseditems.network;
 
-import io.github.discusser.compresseditems.objects.blockentities.CompressedBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -47,11 +45,15 @@ public class CUpdateCompressedBlockPacket {
 
     public void handlePacket(Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            BlockEntity be = Minecraft.getInstance().player.level.getBlockEntity(this.pos);
-            CompoundTag tag = new CompoundTag();
-            tag.putString("item", this.location.toString());
-            tag.put("nbt", this.nbt);
-            be.load(tag);
+            if (Minecraft.getInstance().player != null) {
+                BlockEntity be = Minecraft.getInstance().player.level.getBlockEntity(this.pos);
+                if (be != null) {
+                    CompoundTag tag = new CompoundTag();
+                    tag.putString("item", this.location.toString());
+                    tag.put("nbt", this.nbt);
+                    be.load(tag);
+                }
+            }
         });
     }
 }

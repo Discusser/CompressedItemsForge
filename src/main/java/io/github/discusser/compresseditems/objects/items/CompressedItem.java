@@ -6,12 +6,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -40,20 +38,6 @@ public class CompressedItem extends BlockItem {
                         ? Component.translatable("entity.minecraft.item")
                         : original.getName(new ItemStack(original))
                 );
-    }
-
-    @Override
-    public @NotNull InteractionResult place(@NotNull BlockPlaceContext pContext) {
-        InteractionResult result = super.place(pContext);
-//
-//        if (!pContext.getLevel().isClientSide) {
-//            BlockPos pos = pContext.getClickedPos();
-//            CompressedPacketHandler.sendToClient(new CUpdateCompressedBlockPacket(pos,
-//                    Utils.strLocation(pContext.getItemInHand().getTag().getCompound("BlockEntityTag").getString("item"))
-//            ));
-//        }
-
-        return result;
     }
 
     @Override

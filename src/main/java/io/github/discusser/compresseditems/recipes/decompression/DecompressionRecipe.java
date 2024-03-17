@@ -2,7 +2,6 @@ package io.github.discusser.compresseditems.recipes.decompression;
 
 import com.google.gson.JsonObject;
 import io.github.discusser.compresseditems.Utils;
-import io.github.discusser.compresseditems.objects.items.ItemRegistry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -18,8 +17,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static io.github.discusser.compresseditems.CompressedItems.MODID;
 
 public class DecompressionRecipe extends CustomRecipe {
     private ItemStack output;
@@ -65,7 +62,7 @@ public class DecompressionRecipe extends CustomRecipe {
 
     public static class Serializer implements RecipeSerializer<DecompressionRecipe> {
         public static final Serializer INSTANCE = new Serializer();
-        private static final ResourceLocation ID = new ResourceLocation(MODID, "crafting_shapeless");
+//        private static final ResourceLocation ID = new ResourceLocation(MODID, "crafting_shapeless");
 
         @Override
         public @NotNull DecompressionRecipe fromJson(@NotNull ResourceLocation pRecipeId, @NotNull JsonObject pJson) {

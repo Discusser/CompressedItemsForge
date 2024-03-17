@@ -2,7 +2,6 @@ package io.github.discusser.compresseditems.recipes.compression;
 
 import com.google.gson.JsonObject;
 import io.github.discusser.compresseditems.Utils;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -19,8 +18,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static io.github.discusser.compresseditems.CompressedItems.MODID;
 
 public class CompressionRecipe extends CustomRecipe {
     private ItemStack output;
@@ -70,7 +67,7 @@ public class CompressionRecipe extends CustomRecipe {
 
     public static class Serializer implements RecipeSerializer<CompressionRecipe> {
         public static final Serializer INSTANCE = new Serializer();
-        public static final ResourceLocation ID = new ResourceLocation(MODID, "crafting");
+//        public static final ResourceLocation ID = new ResourceLocation(MODID, "crafting");
 
         @Override
         public @NotNull CompressionRecipe fromJson(@NotNull ResourceLocation pRecipeId,

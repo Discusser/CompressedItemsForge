@@ -14,6 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class CompressedBlockEntity extends BlockEntity {
     private ItemStack uncompressed;
 
@@ -40,7 +42,7 @@ public class CompressedBlockEntity extends BlockEntity {
     protected void saveAdditional(@NotNull CompoundTag pTag) {
         super.saveAdditional(pTag);
         if (uncompressed != null) {
-            pTag.putString("item", ForgeRegistries.ITEMS.getKey(uncompressed.getItem()).toString());
+            pTag.putString("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(uncompressed.getItem())).toString());
             pTag.put("nbt", uncompressed.getOrCreateTag());
         }
     }

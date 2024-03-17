@@ -18,6 +18,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import static io.github.discusser.compresseditems.CompressedItems.MODID;
@@ -52,7 +53,7 @@ public class CompressionRecipeBuilder implements RecipeBuilder {
 
     @Override
     public void save(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
-        ResourceLocation location = ForgeRegistries.ITEMS.getKey(Utils.getDecompressedOf(this.output).getItem());
+        ResourceLocation location = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(Utils.getDecompressedOf(this.output).getItem()));
 
         // compress_modid_itemname
         this.save(pFinishedRecipeConsumer, new ResourceLocation(MODID, "compress_" + location.getNamespace()
