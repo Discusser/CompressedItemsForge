@@ -1,6 +1,7 @@
 {
   "compresseditems.compressed_item.crafted_with": "Can be crafted by putting 9 %s in a crafting table",
   "compresseditems.compressed_item.contains": "Contains 9 %s",
+  "compresseditems.compressed_item.fuel": "Can be used as a fuel",
   "compresseditems.compressable": "This item can be compressed in a crafting table.",
   "block.compresseditems.compressed_item": "Compressed ",
   "item.compresseditems.uncompressed_item": "Uncompressed Item"

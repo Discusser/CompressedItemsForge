@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_nbt",
+              "ops": [
+                {
+                  "op": "replace",
+                  "source": "item",
+                  "target": "BlockEntityTag.item"
+                },
+                {
+                  "op": "replace",
+                  "source": "nbt",
+                  "target": "BlockEntityTag.nbt"
+                }
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "compresseditems:compressed_item"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

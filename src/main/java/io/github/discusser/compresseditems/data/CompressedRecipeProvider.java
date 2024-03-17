@@ -9,6 +9,7 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,7 +53,7 @@ public class CompressedRecipeProvider extends RecipeProvider {
 
     public static void compression(Consumer<FinishedRecipe> finishedRecipe, Item input) {
         CompressionRecipeBuilder
-                .compressed(Utils.getCompressedOf(input))
+                .compressed(Utils.getCompressedOf(new ItemStack(input)))
                 .save(finishedRecipe);
     }
 

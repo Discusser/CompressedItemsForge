@@ -44,10 +44,11 @@ public class DecompressionRecipe extends CustomRecipe {
             inputs.add(pContainer.getItem(i));
         }
 
-        inputs.removeIf(item -> item.getItem() == Items.AIR || item.getItem() != ItemRegistry.COMPRESSED_ITEM.get());
+        inputs.removeIf(item -> item.getItem() == Items.AIR);
         if (inputs.size() != 1) return false;
 
-        this.output = new ItemStack(Utils.getDecompressedOf(inputs.get(0)), 9);
+        this.output = Utils.getDecompressedOf(inputs.get(0));
+        this.output.setCount(9);
 
         return true;
     }

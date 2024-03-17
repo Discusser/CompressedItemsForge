@@ -1,9 +1,11 @@
 package io.github.discusser.compresseditems;
 
 import io.github.discusser.compresseditems.config.CompressedItemsConfig;
+import io.github.discusser.compresseditems.data.CompressedLootTableProvider;
 import io.github.discusser.compresseditems.data.CompressedRecipeProvider;
 import io.github.discusser.compresseditems.network.CompressedPacketHandler;
 import io.github.discusser.compresseditems.objects.blockentities.BlockEntityRegistry;
+import io.github.discusser.compresseditems.objects.items.CompressedItem;
 import io.github.discusser.compresseditems.rendering.CompressedBlockRenderer;
 import io.github.discusser.compresseditems.rendering.CompressedItemStackRenderer;
 import net.minecraft.ChatFormatting;
@@ -15,6 +17,7 @@ import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -31,6 +34,7 @@ public class EventHandler {
         IEventBus forge = MinecraftForge.EVENT_BUS;
         IEventBus mod = FMLJavaModLoadingContext.get().getModEventBus();
 
+        forge.addListener(EventHandler::itemCraftedEvent);
         forge.addListener(EventHandler::itemTooltipEvent);
         forge.addListener(EventHandler::levelLoadEvent);
 
@@ -41,9 +45,16 @@ public class EventHandler {
     }
 
     // Forge
+    public static void itemCraftedEvent(PlayerEvent.ItemCraftedEvent event) {
+        if (event.getCrafting().getItem() instanceof CompressedItem) {
+            // Ensure items like lava buckets don't leave an empty bucket
+            event.getInventory().clearContent();
+        }
+    }
 
     public static void itemTooltipEvent(ItemTooltipEvent event) {
         // cache item so that HashSet::contains isn't called each render tick
+        // does this even make a difference since HashSet lookup is O(1)?
         if (event.getItemStack() == cachedTooltipItem) {
             event.getToolTip().add(Component
                     .translatable("compresseditems.compressable")
@@ -75,6 +86,7 @@ public class EventHandler {
         DataGenerator gen = event.getGenerator();
 
         gen.addProvider(true, new CompressedRecipeProvider(gen));
+        gen.addProvider(true, new CompressedLootTableProvider(gen));
     }
 
     public static void registerModelEvent(ModelEvent.RegisterAdditional event) {

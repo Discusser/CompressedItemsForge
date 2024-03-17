@@ -52,7 +52,7 @@ public class CompressionRecipeBuilder implements RecipeBuilder {
 
     @Override
     public void save(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
-        ResourceLocation location = ForgeRegistries.ITEMS.getKey(Utils.getDecompressedOf(this.output));
+        ResourceLocation location = ForgeRegistries.ITEMS.getKey(Utils.getDecompressedOf(this.output).getItem());
 
         // compress_modid_itemname
         this.save(pFinishedRecipeConsumer, new ResourceLocation(MODID, "compress_" + location.getNamespace()

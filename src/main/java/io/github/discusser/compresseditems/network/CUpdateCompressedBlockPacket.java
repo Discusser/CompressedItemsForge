@@ -17,20 +17,24 @@ import java.util.function.Supplier;
 public class CUpdateCompressedBlockPacket {
     public final BlockPos pos;
     public final ResourceLocation location;
+    public final CompoundTag nbt;
 
-    public CUpdateCompressedBlockPacket(BlockPos pos, ResourceLocation location) {
+    public CUpdateCompressedBlockPacket(BlockPos pos, ResourceLocation location, CompoundTag nbt) {
         this.pos = pos;
         this.location = location;
+        this.nbt = nbt;
     }
 
     public CUpdateCompressedBlockPacket(FriendlyByteBuf buf) {
         this.pos = buf.readBlockPos();
         this.location = buf.readResourceLocation();
+        this.nbt = buf.readNbt();
     }
 
     public void encode(FriendlyByteBuf buf) {
         buf.writeBlockPos(this.pos);
         buf.writeResourceLocation(this.location);
+        buf.writeNbt(this.nbt);
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {
@@ -46,6 +50,7 @@ public class CUpdateCompressedBlockPacket {
             BlockEntity be = Minecraft.getInstance().player.level.getBlockEntity(this.pos);
             CompoundTag tag = new CompoundTag();
             tag.putString("item", this.location.toString());
+            tag.put("nbt", this.nbt);
             be.load(tag);
         });
     }

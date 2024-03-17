@@ -3,6 +3,6 @@
   "output": {
     "count": 1,
     "item": "compresseditems:compressed_item",
-    "nbt": "{BlockEntityTag:{item:\"compresseditems:uncompressed_item\"}}"
+    "nbt": "{BlockEntityTag:{item:\"compresseditems:uncompressed_item\",nbt:{}}}"
   }
 }

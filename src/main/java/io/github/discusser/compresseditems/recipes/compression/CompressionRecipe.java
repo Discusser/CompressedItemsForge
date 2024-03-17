@@ -2,6 +2,7 @@ package io.github.discusser.compresseditems.recipes.compression;
 
 import com.google.gson.JsonObject;
 import io.github.discusser.compresseditems.Utils;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -42,13 +43,14 @@ public class CompressionRecipe extends CustomRecipe {
         List<Item> itemInputs = new ArrayList<>();
         inputs.forEach(stack -> itemInputs.add(stack.getItem()));
 
-        if (itemInputs.stream().distinct().count() != 1
-                || itemInputs.stream().anyMatch(Items.AIR::equals)) return false;
+        if (itemInputs.stream().distinct().count() != 1) return false;
+        if (itemInputs.stream().anyMatch(Items.AIR::equals)) return false;
+        if (inputs.stream().map(ItemStack::getOrCreateTag).distinct().count() != 1) return false;
 
-        Item input = inputs.get(0).getItem();
+        ItemStack input = inputs.get(0);
         this.output = Utils.getCompressedOf(input);
 
-        return Utils.COMPRESSABLE_ITEMS.contains(input);
+        return Utils.COMPRESSABLE_ITEMS.contains(input.getItem());
     }
 
     @Override

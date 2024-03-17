@@ -14,7 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,9 +40,9 @@ public class Utils {
         getCompressableItems();
     }
 
-    public static ItemStack getCompressedOf(Item item) {
+    public static ItemStack getCompressedOf(ItemStack itemStack) {
         CompoundTag tag = new CompoundTag();
-        writeItem(tag, item);
+        writeItemStack(tag, itemStack);
         ItemStack stack = new ItemStack(ItemRegistry.COMPRESSED_ITEM.get());
         stack.setTag(tag);
 
@@ -53,12 +53,51 @@ public class Utils {
 //        return getCompressedOf(ForgeRegistries.ITEMS.getValue(location));
 //    }
 
-    public static Item getDecompressedOf(ItemStack stack) {
-        if (stack.hasTag() && !stack.getTag().getCompound("BlockEntityTag").equals(new CompoundTag())) {
-            return readItem(stack.getTag());
+    public static ItemStack getDecompressedOf(ItemStack stack) {
+        if (stack.hasTag() && !stack.getOrCreateTag().getCompound("BlockEntityTag").equals(new CompoundTag())) {
+            return readItemStack(stack.getOrCreateTag());
         } else {
-            return ItemRegistry.UNCOMPRESSED_ITEM.get();
+            return new ItemStack(ItemRegistry.UNCOMPRESSED_ITEM.get());
         }
+    }
+
+    @SafeVarargs
+    public static List<Item> getItemsFromTags(TagKey<Item>... tags) {
+        List<Item> items = new ArrayList<>();
+        for (TagKey<Item> tag : tags) {
+            items.addAll(ForgeRegistries.ITEMS.tags().getTag(tag).stream().toList());
+        }
+
+        return items;
+    }
+
+    public static JsonObject toJSON(ItemStack stack) {
+        JsonObject obj = new JsonObject();
+        obj.addProperty("item", ForgeRegistries.ITEMS.getKey(stack.getItem()).toString());
+        obj.addProperty("count", stack.getCount());
+        if (stack.hasTag()) obj.addProperty("nbt", stack.getOrCreateTag().toString());
+        return obj;
+    }
+
+    public static void writeItemStack(CompoundTag tag, ItemStack itemStack) {
+        CompoundTag blockentitytag = new CompoundTag();
+        blockentitytag.putString("item", ForgeRegistries.ITEMS.getKey(itemStack.getItem()).toString());
+        blockentitytag.put("nbt", itemStack.getOrCreateTag());
+        tag.put("BlockEntityTag", blockentitytag);
+    }
+
+    public static @NotNull ItemStack readItemStack(CompoundTag tag) {
+        Item item = ForgeRegistries.ITEMS.getValue(strLocation(tag.getCompound("BlockEntityTag").getString("item")));
+        CompoundTag nbt = tag.getCompound("BlockEntityTag").getCompound("nbt");
+
+        ItemStack stack = new ItemStack(item, 1);
+        stack.setTag(nbt);
+        return stack;
+    }
+
+    public static ResourceLocation strLocation(String str) {
+        String[] strParts = str.split(":");
+        return new ResourceLocation(strParts[0], strParts[1]);
     }
 
     private void getCompressableItems() {
@@ -102,39 +141,5 @@ public class Utils {
         items.add(ItemRegistry.UNCOMPRESSED_ITEM.get()); // Manually add our uncompressed item
 
         COMPRESSABLE_ITEMS.addAll(items);
-    }
-
-    @SafeVarargs
-    public static List<Item> getItemsFromTags(TagKey<Item>... tags) {
-        List<Item> items = new ArrayList<>();
-        for (TagKey<Item> tag : tags) {
-            items.addAll(ForgeRegistries.ITEMS.tags().getTag(tag).stream().toList());
-        }
-
-        return items;
-    }
-
-    public static JsonObject toJSON(ItemStack stack) {
-        JsonObject obj = new JsonObject();
-        obj.addProperty("item", ForgeRegistries.ITEMS.getKey(stack.getItem()).toString());
-        obj.addProperty("count", stack.getCount());
-        if (stack.hasTag()) obj.addProperty("nbt", stack.getTag().toString());
-        return obj;
-    }
-
-    public static void writeItem(CompoundTag tag, Item item) {
-        CompoundTag blockentitytag = new CompoundTag();
-        blockentitytag.putString("item", ForgeRegistries.ITEMS.getKey(item).toString());
-        tag.put("BlockEntityTag", blockentitytag);
-    }
-
-    @Nullable
-    public static Item readItem(CompoundTag tag) {
-        return ForgeRegistries.ITEMS.getValue(strLocation(tag.getCompound("BlockEntityTag").getString("item")));
-    }
-
-    public static ResourceLocation strLocation(String str) {
-        String[] strParts = str.split(":");
-        return new ResourceLocation(strParts[0], strParts[1]);
     }
 }
