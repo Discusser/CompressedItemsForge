@@ -6,6 +6,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -43,6 +44,8 @@ public class CompressionRecipe extends CustomRecipe {
         if (itemInputs.stream().distinct().count() != 1) return false;
         if (itemInputs.stream().anyMatch(Items.AIR::equals)) return false;
         if (inputs.stream().map(ItemStack::getOrCreateTag).distinct().count() != 1) return false;
+        if (inputs.get(0).getItem() instanceof BucketItem)
+            return false; // Buckets don't cooperate very well, causing dupe glitches
 
         ItemStack input = inputs.get(0);
         this.output = Utils.getCompressedOf(input);

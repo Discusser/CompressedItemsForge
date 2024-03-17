@@ -46,7 +46,7 @@ public class CompressedItemStackRenderer extends BlockEntityWithoutLevelRenderer
 
         // I give up on this
         // TODO: implement this correctly
-//        if (pTransformType.firstPerson() || pTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || pTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND) {
+        if (pTransformType.firstPerson() || pTransformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || pTransformType == ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND) {
 //            offset.mul(0.125f);
 //            offset.add(0.5f, 0.5f, 0.5f);
 //            pPoseStack.translate(offset.x(), offset.y(), offset.z());
@@ -54,7 +54,7 @@ public class CompressedItemStackRenderer extends BlockEntityWithoutLevelRenderer
 //            pPoseStack.mulPose(Vector3f.YN.rotationDegrees(45));
 //            pPoseStack.translate(0.7, 0.6,0.7);
 //            pPoseStack.scale(4.0f, 4.0f, 4.0f);
-//        } else {
+        } else {
             offset.mul(0.125f);
             offset.add(0.5f, 0.69f, 0.5f);
             pPoseStack.translate(offset.x(), offset.y(), offset.z());
@@ -70,7 +70,7 @@ public class CompressedItemStackRenderer extends BlockEntityWithoutLevelRenderer
                     pBufferSource,
                     0
             );
-//        }
+        }
 
         pPoseStack.popPose();
     }

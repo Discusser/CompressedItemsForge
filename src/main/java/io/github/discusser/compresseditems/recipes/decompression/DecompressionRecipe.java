@@ -2,6 +2,7 @@ package io.github.discusser.compresseditems.recipes.decompression;
 
 import com.google.gson.JsonObject;
 import io.github.discusser.compresseditems.Utils;
+import io.github.discusser.compresseditems.objects.items.CompressedItem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -43,6 +44,7 @@ public class DecompressionRecipe extends CustomRecipe {
 
         inputs.removeIf(item -> item.getItem() == Items.AIR);
         if (inputs.size() != 1) return false;
+        if (!(inputs.get(0).getItem() instanceof CompressedItem)) return false;
 
         this.output = Utils.getDecompressedOf(inputs.get(0));
         this.output.setCount(9);
