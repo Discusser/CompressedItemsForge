@@ -1,16 +1,13 @@
 package io.github.discusser.compresseditems.objects.blockentities;
 
-import io.github.discusser.compresseditems.CompressedItems;
 import io.github.discusser.compresseditems.Utils;
 import io.github.discusser.compresseditems.network.CUpdateCompressedBlockPacket;
 import io.github.discusser.compresseditems.network.CompressedPacketHandler;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
