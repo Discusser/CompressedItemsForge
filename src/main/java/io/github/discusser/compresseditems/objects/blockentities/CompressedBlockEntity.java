@@ -1,22 +1,28 @@
 package io.github.discusser.compresseditems.objects.blockentities;
 
+import io.github.discusser.compresseditems.CompressedItems;
 import io.github.discusser.compresseditems.Utils;
 import io.github.discusser.compresseditems.network.CUpdateCompressedBlockPacket;
 import io.github.discusser.compresseditems.network.CompressedPacketHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
 public class CompressedBlockEntity extends BlockEntity {
+    @Nullable
     private ItemStack uncompressed;
 
     public CompressedBlockEntity(BlockPos pPos, BlockState pBlockState) {
@@ -31,7 +37,7 @@ public class CompressedBlockEntity extends BlockEntity {
         uncompressed = new ItemStack(ForgeRegistries.ITEMS.getValue(location));
         uncompressed.setTag(nbt);
 
-        if (this.level != null) {
+        if (this.level instanceof ServerLevel) {
             BlockPos pos = this.getBlockPos();
             ResourceKey<Level> dim = this.level.dimension();
             CompressedPacketHandler.sendToNear(new CUpdateCompressedBlockPacket(pos, location, nbt), pos, dim);
@@ -59,7 +65,7 @@ public class CompressedBlockEntity extends BlockEntity {
         load(tag);
     }
 
-    public ItemStack getUncompressed() {
+    public @Nullable ItemStack getUncompressed() {
         return this.uncompressed;
     }
 }

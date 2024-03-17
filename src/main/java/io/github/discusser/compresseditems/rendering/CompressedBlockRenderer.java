@@ -42,8 +42,10 @@ public class CompressedBlockRenderer implements BlockEntityRenderer<CompressedBl
     @Override
     public void render(@NotNull CompressedBlockEntity pBlockEntity, float pPartialTick, @NotNull PoseStack pPoseStack,
                        @NotNull MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
-
         ItemStack uncompressed = pBlockEntity.getUncompressed();
+
+        if (uncompressed == null)
+            return;
 
         Vector3f[] vectors = {Vector3f.XP.copy(), Vector3f.XN.copy(), Vector3f.ZP.copy(), Vector3f.ZN.copy()};
 

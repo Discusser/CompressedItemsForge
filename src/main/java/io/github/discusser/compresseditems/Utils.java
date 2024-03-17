@@ -8,6 +8,7 @@ import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -141,5 +142,6 @@ public class Utils {
         items.add(ItemRegistry.UNCOMPRESSED_ITEM.get()); // Manually add our uncompressed item
 
         COMPRESSABLE_ITEMS.addAll(items);
+        COMPRESSABLE_ITEMS.removeIf(item -> item instanceof BucketItem); // Buckets cause dupe glitches
     }
 }
